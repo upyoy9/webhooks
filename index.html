@@ -1,0 +1,382 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #7289da 0%, #4e5d94 100%);
+            min-height: 100vh;
+        }
+        .webhook-card {
+            transition: all 0.3s ease;
+        }
+        .webhook-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .toast {
+            animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+            pointer-events: none;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.right-4{right:1rem}.top-4{top:1rem}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mr-1{margin-right:0.25rem}.mr-2{margin-right:0.5rem}.block{display:block}.flex{display:flex}.grid{display:grid}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-8{width:2rem}.w-full{width:100%}.max-w-5xl{max-width:64rem}.flex-1{flex:1 1 0%}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-between{justify-content:space-between}.gap-4{gap:1rem}.self-end{align-self:flex-end}.overflow-hidden{overflow:hidden}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-8{padding-top:2rem;padding-bottom:2rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.hover\:bg-green-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.focus\:border-indigo-500:focus{--tw-border-opacity:1;border-color:rgb(99 102 241 / var(--tw-border-opacity, 1))}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-indigo-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(99 102 241 / var(--tw-ring-opacity, 1))}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:p-6{padding:1.5rem}}@media (min-width: 1024px){.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}}</style></head>
+<body class="p-4 md:p-6">
+    <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
+        <div class="p-6 bg-gray-800 text-white">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold flex items-center">
+                    <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.2701 5.41C17.9901 4.8 16.6101 4.35 15.1501 4.09C15.0301 4.3 14.8901 4.61 14.7901 4.85C13.25 4.61 11.72 4.61 10.21 4.85C10.11 4.61 9.97005 4.3 9.85005 4.09C8.39005 4.35 7.01005 4.8 5.73005 5.41C3.14005 9.14 2.41005 12.79 2.77005 16.38C4.49005 17.67 6.16005 18.5 7.80005 19.05C8.14005 18.57 8.45005 18.06 8.70005 17.53C8.09005 17.29 7.52005 17 6.96005 16.66C7.07005 16.58 7.17005 16.5 7.27005 16.41C10.4 17.89 13.8 17.89 16.93 16.41C17.03 16.5 17.13 16.58 17.24 16.66C16.68 17 16.1 17.29 15.5 17.53C15.75 18.06 16.05 18.57 16.4 19.05C18.04 18.5 19.72 17.67 21.44 16.38C21.85 12.2 20.72 8.59 19.2701 5.41ZM8.25005 14.18C7.23005 14.18 6.40005 13.25 6.40005 12.12C6.40005 10.99 7.22005 10.06 8.25005 10.06C9.29005 10.06 10.11 10.99 10.1 12.12C10.11 13.25 9.28005 14.18 8.25005 14.18ZM15.75 14.18C14.73 14.18 13.9 13.25 13.9 12.12C13.9 10.99 14.72 10.06 15#pragma once
+#include <Arduino.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+#include "config.h"
+
+class DiscordWebhook {
+private:
+    String webhookUrl;
+
+public:
+    DiscordWebhook(const String& url) : webhookUrl(url) {}
+
+    bool sendMessage(const String& content, const String& username = "", const String& avatarUrl = "") {
+        if (WiFi.status() != WL_CONNECTED) {
+            Serial.println("WiFi not connected");
+            return false;
+        }
+
+        HTTPClient http;
+        http.begin(webhookUrl);
+        http.addHeader("Content-Type", "application/json");
+
+        DynamicJsonDocument doc(1024);
+        doc["content"] = content;
+        if (username != "") doc["username"] = username;
+        if (avatarUrl != "") doc["avatar_url"] = avatarUrl;
+
+        String payload;
+        serializeJson(doc, payload);
+
+        int httpCode = http.POST(payload);
+        bool success = (httpCode == 204);
+
+        if (!success) {
+            Serial.printf("HTTP error: %d\n", httpCode);
+        }
+
+        http.end();
+        return success;
+    }
+};
+.75 10.06C16.79 10.06 17.61 10.99 17.6 12.12C17.6 13.25 16.78 14.18 15.75 14.18Z" fill="#7289DA"></path>
+                    </svg>
+                    Discord Webhook Manager
+                </h1>
+            </div>
+        </div>
+
+        <div class="p-6">
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-4">Add New Webhook</h2>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <label for="webhookName" class="block text-sm font-medium text-gray-700 mb-1">Webhook Name</label>
+                        <input type="text" id="webhookName" placeholder="My Server" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="flex-1">
+                        <label for="webhookUrl" class="block text-sm font-medium text-gray-700 mb-1">Webhook URL</label>
+                        <input type="text" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="self-end">
+                        <button id="addWebhookBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Add Webhook</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Your Webhooks</h2>
+                <div id="webhooksList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                <div id="noWebhooks" class="text-center py-8 text-gray-500" style="display: block;">
+                    No webhooks added yet. Add your first webhook above.
+                </div>
+            </div>
+
+            <div class="bg-gray-100 p-6 rounded-lg">
+                <h2 class="text-xl font-semibold mb-4">Send Message</h2>
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username (optional)</label>
+                    <input type="text" id="username" placeholder="Webhook Bot" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div class="mb-4">
+                    <label for="avatarUrl" class="block text-sm font-medium text-gray-700 mb-1">Avatar URL (optional)</label>
+                    <input type="text" id="avatarUrl" placeholder="https://example.com/avatar.png" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div class="mb-4">
+                    <label for="messageContent" class="block text-sm font-medium text-gray-700 mb-1">Message Content</label>
+                    <textarea id="messageContent" rows="4" placeholder="Enter your message here..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button id="sendMessageBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                        Send to All Webhooks
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications container -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50"></div>
+
+    <script>
+        // Initialize IndexedDB
+        let db;
+        const request = indexedDB.open('DiscordWebhookManager', 1);
+
+        request.onerror = function(event) {
+            showToast('Error opening database', 'error');
+        };
+
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+            const objectStore = db.createObjectStore('webhooks', { keyPath: 'id', autoIncrement: true });
+            objectStore.createIndex('name', 'name', { unique: false });
+            objectStore.createIndex('url', 'url', { unique: true });
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            loadWebhooks();
+        };
+
+        // Load webhooks from IndexedDB
+        function loadWebhooks() {
+            const transaction = db.transaction(['webhooks'], 'readonly');
+            const objectStore = transaction.objectStore('webhooks');
+            const request = objectStore.getAll();
+
+            request.onsuccess = function(event) {
+                const webhooks = event.target.result;
+                displayWebhooks(webhooks);
+            };
+
+            request.onerror = function(event) {
+                showToast('Error loading webhooks', 'error');
+            };
+        }
+
+        // Display webhooks in the UI
+        function displayWebhooks(webhooks) {
+            const webhooksList = document.getElementById('webhooksList');
+            const noWebhooks = document.getElementById('noWebhooks');
+            
+            webhooksList.innerHTML = '';
+            
+            if (webhooks.length === 0) {
+                noWebhooks.style.display = 'block';
+                return;
+            }
+            
+            noWebhooks.style.display = 'none';
+            
+            webhooks.forEach(webhook => {
+                const webhookCard = document.createElement('div');
+                webhookCard.className = 'webhook-card bg-white p-4 rounded-lg border border-gray-200 shadow-sm';
+                webhookCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-semibold text-lg text-gray-800">${escapeHtml(webhook.name)}</h3>
+                        <button class="delete-webhook text-red-500 hover:text-red-700" data-id="${webhook.id}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 truncate" title="${escapeHtml(webhook.url)}">${escapeHtml(webhook.url)}</p>
+                `;
+                webhooksList.appendChild(webhookCard);
+            });
+
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-webhook').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    deleteWebhook(id);
+                });
+            });
+        }
+
+        // Add a new webhook
+        document.getElementById('addWebhookBtn').addEventListener('click', function() {
+            const name = document.getElementById('webhookName').value.trim();
+            const url = document.getElementById('webhookUrl').value.trim();
+            
+            if (!name || !url) {
+                showToast('Please enter both name and URL', 'error');
+                return;
+            }
+            
+            if (!url.startsWith('https://discord.com/api/webhooks/')) {
+                showToast('Invalid Discord webhook URL', 'error');
+                return;
+            }
+            
+            const transaction = db.transaction(['webhooks'], 'readwrite');
+            const objectStore = transaction.objectStore('webhooks');
+            
+            const webhook = {
+                name: name,
+                url: url
+            };
+            
+            const request = objectStore.add(webhook);
+            
+            request.onsuccess = function() {
+                document.getElementById('webhookName').value = '';
+                document.getElementById('webhookUrl').value = '';
+                showToast('Webhook added successfully', 'success');
+                loadWebhooks();
+            };
+            
+            request.onerror = function() {
+                showToast('Error adding webhook. URL might be duplicate.', 'error');
+            };
+        });
+
+        // Delete a webhook
+        function deleteWebhook(id) {
+            const transaction = db.transaction(['webhooks'], 'readwrite');
+            const objectStore = transaction.objectStore('webhooks');
+            const request = objectStore.delete(id);
+            
+            request.onsuccess = function() {
+                showToast('Webhook deleted successfully', 'success');
+                loadWebhooks();
+            };
+            
+            request.onerror = function() {
+                showToast('Error deleting webhook', 'error');
+            };
+        }
+
+        // Send message to all webhooks
+        document.getElementById('sendMessageBtn').addEventListener('click', function() {
+            const messageContent = document.getElementById('messageContent').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const avatarUrl = document.getElementById('avatarUrl').value.trim();
+            
+            if (!messageContent) {
+                showToast('Please enter a message', 'error');
+                return;
+            }
+            
+            const transaction = db.transaction(['webhooks'], 'readonly');
+            const objectStore = transaction.objectStore('webhooks');
+            const request = objectStore.getAll();
+            
+            request.onsuccess = function(event) {
+                const webhooks = event.target.result;
+                
+                if (webhooks.length === 0) {
+                    showToast('No webhooks to send to', 'error');
+                    return;
+                }
+                
+                let successCount = 0;
+                let failCount = 0;
+                let totalCount = webhooks.length;
+                
+                webhooks.forEach(webhook => {
+                    const payload = {
+                        content: messageContent
+                    };
+                    
+                    if (username) payload.username = username;
+                    if (avatarUrl) payload.avatar_url = avatarUrl;
+                    
+                    fetch(webhook.url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            successCount++;
+                        } else {
+                            failCount++;
+                        }
+                        checkCompletion();
+                    })
+                    .catch(() => {
+                        failCount++;
+                        checkCompletion();
+                    });
+                });
+                
+                function checkCompletion() {
+                    if (successCount + failCount === totalCount) {
+                        if (failCount === 0) {
+                            showToast(`Message sent to all ${successCount} webhooks`, 'success');
+                        } else if (successCount === 0) {
+                            showToast(`Failed to send message to all webhooks`, 'error');
+                        } else {
+                            showToast(`Message sent to ${successCount} webhooks, failed for ${failCount}`, 'warning');
+                        }
+                    }
+                }
+            };
+            
+            request.onerror = function() {
+                showToast('Error retrieving webhooks', 'error');
+            };
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let bgColor = 'bg-blue-500';
+            if (type === 'success') bgColor = 'bg-green-500';
+            if (type === 'error') bgColor = 'bg-red-500';
+            if (type === 'warning') bgColor = 'bg-yellow-500';
+            
+            toast.className = `toast ${bgColor} text-white px-4 py-2 rounded-lg shadow-lg mb-2`;
+            toast.textContent = message;
+            
+            toastContainer.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toastContainer.removeChild(toast);
+            }, 3000);
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&")
+                .replace(/</g, "<")
+                .replace(/>/g, ">")
+                .replace(/"/g, """)
+                .replace(/'/g, "'");
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'940243d971af91ca',t:'MTc0NzMwODIyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+</body></html>
